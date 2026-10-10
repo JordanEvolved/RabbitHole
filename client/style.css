@@ -1,14 +1,44 @@
-/* ==========================================================
-   Rabbit Hole: graph integration
-   ========================================================== */
+/* YOUR ORIGINAL CSS FIRST */
 
-/* Give the graph room below the search bar */
-body {
-  display: block;
-  min-height: 100vh;
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  --meadow: #eef4e4;
+  --clover: #d6e8cf;
+  --fern: #7ea87a;
+  --moss: #4f7a55;
+  --forest: #2e4a36;
+  --petal: #f6dcd6;
+  --white: #fbfdf8;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Nunito", system-ui, sans-serif;
 }
 
-/* Center the homepage content */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+
+  background-color: var(--meadow);
+
+  color: var(--forest);
+  font-family: var(--font-body);
+}
+
+.logo {
+  width: 96px;
+  height: auto;
+}
+
+/* THEN THE NEW GRAPH CSS */
+
 .app {
   width: 100%;
   max-width: 1200px;
@@ -21,11 +51,18 @@ body {
   gap: 0.75rem;
 }
 
-.tagline {
-  margin-bottom: 1rem;
+h1 {
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 9vw, 4.5rem);
 }
 
-/* Keep search and button together */
+.tagline {
+  margin-bottom: 1rem;
+  color: #567059;
+}
+
 #search-form {
   display: flex;
   justify-content: center;
@@ -35,22 +72,43 @@ body {
   max-width: 560px;
 }
 
-#search-form input {
-  min-width: 0;
-  max-width: none;
+input[type="text"] {
+  flex: 1;
+
+  padding: 0.85rem 1.4rem;
+
+  background: var(--white);
+  border: 2px solid var(--clover);
+  border-radius: 999px;
+
+  font: inherit;
+  color: var(--forest);
 }
 
-#search-form button {
-  flex-shrink: 0;
+button {
+  padding: 0.85rem 1.8rem;
+
+  background: var(--fern);
+  border: 2px solid var(--fern);
+  border-radius: 999px;
+
+  color: white;
+  font: inherit;
+  font-weight: 700;
+
+  cursor: pointer;
 }
 
-/* Search progress */
+button:hover {
+  background: var(--moss);
+  border-color: var(--moss);
+}
+
 #status {
   margin: 1rem 0;
   color: var(--moss);
 }
 
-/* Graph workspace */
 #graph-panel {
   width: 100%;
   margin-top: 1rem;
@@ -69,9 +127,9 @@ body {
   box-shadow: 0 8px 35px rgba(46, 74, 54, 0.08);
 }
 
-/* Clicked node information */
 #details {
   width: 100%;
+
   margin-top: 1rem;
   padding: 1rem 1.5rem;
 
@@ -80,19 +138,6 @@ body {
   border-radius: 18px;
 }
 
-#details h2 {
-  margin: 0;
-  font-family: var(--font-display);
-  color: var(--forest);
-}
-
-#details p {
-  margin: 0.5rem 0 0;
-  padding: 0;
-  text-align: left;
-}
-
-/* Hide panels until needed */
 #graph-panel[hidden],
 #details[hidden] {
   display: none;
@@ -101,12 +146,6 @@ body {
 @media (max-width: 520px) {
   #search-form {
     flex-direction: column;
-  }
-
-  #search-form input,
-  #search-form button {
-    width: 100%;
-    max-width: none;
   }
 
   #cy {
