@@ -3,14 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Rabbit Hole</title>
-  <link rel="stylesheet" href="style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- Loads our frontend JavaScript through Vite -->
+  <script type="module" src="/main.js"></script>
 </head>
+
 <body>
-  <img src="./img/logo.svg" alt="Rabbit Hole logo" class="logo">
-  <h1>Rabbit Hole</h1>
-  <p>Search for any musician and see how they're connected.</p>
-  <input type="text" placeholder="Search for a person...">
-  <button>Search</button>
+  <main class="app">
+
+    <img src="/logo.svg" alt="Rabbit Hole logo" class="logo">
+
+    <h1>Rabbit Hole</h1>
+
+    <p class="tagline">
+      Search for anyone and see how they're connected.
+    </p>
+
+    <!-- Search bar -->
+    <form id="search-form">
+      <input
+        type="text"
+        id="artist-input"
+        placeholder="Search for an artist..."
+        required
+      >
+
+      <button type="submit">Search</button>
+    </form>
+
+    <!-- Search and graph progress -->
+    <p id="status" aria-live="polite">
+      Search for an artist to start exploring.
+    </p>
+
+    <!-- Graph appears here after searching -->
+    <section id="graph-panel" hidden>
+
+      <div id="cy"></div>
+
+      <!-- Information when clicking a node -->
+      <aside id="details" hidden>
+        <h2 id="details-name"></h2>
+        <p id="details-description"></p>
+      </aside>
+
+    </section>
+
+  </main>
 </body>
 </html>
