@@ -1,33 +1,75 @@
+const { rateLimitedFetch } = require('../services/rateLimiter');
+
 //import dependencies
 require('dotenv').config();
+const API_URL = 'https://api.discogs.com';
 
-// let name = 'Nirvana';
+async function discogsFetch(path, budget) {
+    const token = process.env.DISCOGS_TOKEN;
 
-async function searchArtist(name){
-    const url = new URL('https://api.discogs.com/database/search');
-
-    url.searchParams.set('q', name);
-    url.searchParams.set('type', 'artist');
-    url.searchParams.set('per_page', '1');
-
-    const response = await fetch(url, {
-        headers: {
-            'User-Agent': 'RabbitHole/1.0',
-            'Authorization': `Discogs token=${process.env.DISCOGS_TOKEN}`    
-        }
-    });
-
-    if (!response.ok) {
-        //displays the error = from discogs API
-        throw new Error(`Discogs API Error: ${response.status}`);
+    if (!token) {
+        throw new Error('Missing DISCOGS_TOKEN');
     }
 
-    const data = await response.json();
+    //runs a fetch with rate limiting
+    return rateLimitedFetch(
+        `${API_URL}${path}`,
+        { 
+            headers: {
+                'User-Agent': 'RabbitHole/1.0',
+                'Authorization': `Discogs token=${token}`,
+                'Accept': 'application/json'
+            }
+        }, 
+        budget
+    );
+}
+
+async function searchArtist(name) {
+    //why did i not know this existed
+    const params = new URLSearchParams({
+        q: name, 
+        type: 'artist',
+        per_page: '1'
+    });
+
+    const data = await discogsFetch(
+        `/database/search?${params}`,
+        budget
+    );
+
     console.log(JSON.stringify(data, null, 2));
 
     return data.results[0];
 }
 
-// searchArtist(name);
+async function getArtistReleases(artistId, budget) {
+    //grabs the artist releases
+    return discogsFetch(
+        `/artists/${artistId}/releases?per_page=100`,
+        budget
+    );
+}
 
-module.exports = { searchArtist };
+// Retrieve a master release.
+async function getMaster(masterId, budget) {
+    return discogsFetch(
+        `/masters/${masterId}`,
+        budget
+    );
+}
+
+// Retrieve a specific release and its credits.
+async function getRelease(releaseId, budget) {
+    return discogsFetch(
+        `/releases/${releaseId}`,
+        budget
+    );
+}
+
+module.exports = {
+    searchArtist,
+    getArtistReleases,
+    getMaster,
+    getRelease
+};
