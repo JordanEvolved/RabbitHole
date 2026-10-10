@@ -150,3 +150,9 @@ button:focus-visible {
     max-width: none;
   }
 }
+
+/* ---------- Logo ---------- */
+   .logo {
+     width: 96px;
+     height: auto;
+   }
