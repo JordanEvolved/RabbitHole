@@ -1,38 +1,80 @@
 //import dependencies
 const {express} = require('express');
 require('dotenv').config();
+
 const {searchArtists} = require('./requests/discogs.js');
 
 // set up express server
 const app = express();
 const PORT = 3000;
 
-app.get('/api/artists', async (req, res) => {
-    try {
-        const name = req.query.name;
+// Endpoint for generating a graph.
+app.get('/api/graph', async (req, res) => {
+    const name = req.query.name;
 
-        //if input is not a name, send back an error
-        if (!name || typeof name !== 'string') {
-            console.log("Name not inputted!");
+    // Validate the artist name.
+    if (
+        typeof name !== 'string' ||
+        !name.trim()
+    ) {
+        return res.status(400).json({
+            error: 'Artist name is required'
+        });
+    }
 
-            //bad request
-            res.status(400).json({
-                error: 'Must input a name!'
-            });
+    // Configure Server-Sent Events.
+    res.setHeader(
+        'Content-Type',
+        'text/event-stream'
+    );
+
+    res.setHeader(
+        'Cache-Control',
+        'no-cache'
+    );
+
+    res.setHeader(
+        'Connection',
+        'keep-alive'
+    );
+
+    // Send headers immediately.
+    res.flushHeaders();
+
+    // Callback passed to graphBuilder.js.
+    function emit(update) {
+        if (
+            !res.destroyed &&
+            !res.writableEnded
+        ) {
+            res.write(
+                `data: ${JSON.stringify(update)}\n\n`
+            );
         }
+    }
 
-        const artist = await searchArtists(name);
-
-        res.json(artist);
-        
+    try {
+        // Generate the graph while streaming updates.
+        await buildGraph(
+            name.trim(),
+            emit
+        );
     } catch (error) {
-        res.status(500).json({
-            error: 'Artist could not be found!'
-        })
-        
+        console.error(error);
+
+        emit({
+            type: 'error',
+            message: 'Failed to generate graph'
+        });
+    } finally {
+        // Close the stream when finished.
+        res.end();
     }
 });
 
+// Start Express.
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(
+        `RabbitHole running on port ${PORT}`
+    );
 });
