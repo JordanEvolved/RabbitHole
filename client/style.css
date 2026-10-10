@@ -1,0 +1,152 @@
+/* ==========================================================
+   Rabbit Hole: soft, natural theme
+   ========================================================== */
+ 
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@400;600;700&display=swap");
+ 
+/* ---------- Color and type tokens ----------
+   Change a color here and it updates everywhere. */
+:root {
+  --meadow:  #eef4e4;   /* page background: pale sage */
+  --clover:  #d6e8cf;   /* soft green for borders and fills */
+  --fern:    #7ea87a;   /* main accent: mid green */
+  --moss:    #4f7a55;   /* darker green for button hover */
+  --forest:  #2e4a36;   /* text and headings */
+  --petal:   #f6dcd6;   /* blush pink, used sparingly like a rabbit's nose */
+  --white:   #fbfdf8;   /* input background: warm off-white */
+ 
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+ 
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+ 
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+ 
+  /* Flex-wrap lets the heading and tagline take a full row,
+     while the input and button share the row below. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  gap: 0.75rem;
+ 
+  background-color: var(--meadow);
+  /* One soft glow near the top, like light through leaves */
+  background-image: radial-gradient(
+    ellipse 70% 45% at 50% 0%,
+    #dcecd3 0%,
+    rgba(238, 244, 228, 0) 100%
+  );
+ 
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+ 
+/* ---------- Heading and tagline ---------- */
+h1 {
+  flex-basis: 100%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.75rem, 9vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--forest);
+}
+ 
+p {
+  flex-basis: 100%;
+  margin: 0 0 1.25rem;
+  text-align: center;
+  color: #567059;
+ 
+  /* Keep the text narrow with side padding instead of max-width.
+     A max-width would shrink the paragraph's flex box and let the
+     search bar slide up beside it on wide screens. */
+  padding-inline: max(0px, calc(50% - 17ch));
+}
+ 
+/* ---------- Search box ---------- */
+input[type="text"] {
+  flex: 1 1 18rem;
+  max-width: 26rem;
+  padding: 0.85rem 1.4rem;
+ 
+  background: var(--white);
+  border: 2px solid var(--clover);
+  border-radius: 999px;
+ 
+  font: inherit;
+  color: var(--forest);
+  box-shadow: 0 2px 10px rgba(79, 122, 85, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+input[type="text"]::placeholder {
+  color: #8da58f;
+}
+ 
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--fern);
+  box-shadow: 0 0 0 4px rgba(126, 168, 122, 0.25);
+}
+ 
+/* ---------- Button ---------- */
+button {
+  padding: 0.85rem 1.8rem;
+ 
+  background: var(--fern);
+  border: 2px solid var(--fern);
+  border-radius: 999px;
+ 
+  font: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.1s ease;
+}
+ 
+button:hover {
+  background: var(--moss);
+  border-color: var(--moss);
+}
+ 
+button:active {
+  transform: scale(0.97);
+}
+ 
+button:focus-visible {
+  outline: 3px solid var(--petal);
+  outline-offset: 3px;
+}
+ 
+/* ---------- Accessibility and small screens ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+ 
+/* On phones, stack the input and button full-width */
+@media (max-width: 520px) {
+  input[type="text"],
+  button {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
