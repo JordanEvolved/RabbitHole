@@ -20,7 +20,7 @@ function createBudget(options = {}) {
     return {
         ...limits,
         requests: 0,
-        deadline: Date.now() + limits.maxTimeMs,
+        deadline: Date.now() + limits.maxTimeMS,
 
         //calculates remaining time to make graph
         timeLeft() {

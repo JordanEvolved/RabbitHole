@@ -1,7 +1,6 @@
 const { rateLimitedFetch } = require('../services/rateLimiter');
 
 //import dependencies
-require('dotenv').config();
 const API_URL = 'https://api.discogs.com';
 
 async function discogsFetch(path, budget) {
@@ -25,7 +24,7 @@ async function discogsFetch(path, budget) {
     );
 }
 
-async function searchArtist(name) {
+async function searchArtist(name, budget) {
     //why did i not know this existed
     const params = new URLSearchParams({
         q: name, 

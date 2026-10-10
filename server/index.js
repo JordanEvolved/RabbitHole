@@ -1,8 +1,11 @@
 //import dependencies
-const {express} = require('express');
+const express = require('express');
 require('dotenv').config();
 
-const {searchArtists} = require('./requests/discogs.js');
+const {
+    buildGraph
+} = require('./services/graphBuilder');
+
 
 // set up express server
 const app = express();
