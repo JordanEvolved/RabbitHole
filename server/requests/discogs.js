@@ -25,6 +25,7 @@ async function returnArtist(name){
     }
 
     const data = await response.json();
+    console.log(JSON.stringify(data, null, 2));
 
     return data.results;
 }

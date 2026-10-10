@@ -1,6 +1,7 @@
 //import dependencies
 const {express} = require('express');
 require('dotenv').config();
+const {searchArtists} = require('./requests/discogs.js');
 
 // set up express server
 const app = express();
@@ -20,7 +21,7 @@ app.get('/api/artists', async (req, res) => {
             });
         }
 
-        const artist = await returnArtist(name);
+        const artist = await searchArtists(name);
 
         res.json(artist);
         
