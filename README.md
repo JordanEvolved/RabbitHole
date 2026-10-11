@@ -2,7 +2,9 @@
 
 A web app that visualizes connections between creatives. 
 
-RabbitHole takes in any artist available in the [Discogs](https://www.discogs.com) database, and returns a web of artists, producers, and songs that they are connected to. This visualizes connections in the industry that may have been obscured before. 
+RabbitHole takes in any artist available in the [Discogs](https://www.discogs.com) database, and returns a web of artists, producers, and songs that they are connected to. This visualizes connections in the industry that may have been obscured before.
+
+Try it [here!](https://rabbit-hole-jsap0wcvo-evolved1.vercel.app)
 
 ## Dependencies
 
