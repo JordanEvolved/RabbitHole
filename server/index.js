@@ -9,7 +9,6 @@ const {
 
 // set up express server
 const app = express();
-const PORT = 3000;
 
 // Endpoint for generating a graph.
 app.get('/api/graph', async (req, res) => {
@@ -76,8 +75,13 @@ app.get('/api/graph', async (req, res) => {
 });
 
 // Start Express.
-app.listen(PORT, () => {
-    console.log(
-        `RabbitHole running on port ${PORT}`
-    );
-});
+if (require.main === module) {
+    const PORT = 3000;
+
+    app.listen(PORT, () => {
+        console.log(
+            `RabbitHole running on port ${PORT}`
+        );
+    });
+}
+
