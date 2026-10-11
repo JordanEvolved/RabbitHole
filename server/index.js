@@ -1,4 +1,3 @@
-//import dependencies
 const express = require('express');
 require('dotenv').config();
 
@@ -6,16 +5,11 @@ const {
     buildGraph
 } = require('./services/graphBuilder');
 
-
-// set up express server
 const app = express();
-const PORT = 3000;
 
-// Endpoint for generating a graph.
 app.get('/api/graph', async (req, res) => {
     const name = req.query.name;
 
-    // Validate the artist name.
     if (
         typeof name !== 'string' ||
         !name.trim()
@@ -25,7 +19,6 @@ app.get('/api/graph', async (req, res) => {
         });
     }
 
-    // Configure Server-Sent Events.
     res.setHeader(
         'Content-Type',
         'text/event-stream'
@@ -41,10 +34,8 @@ app.get('/api/graph', async (req, res) => {
         'keep-alive'
     );
 
-    // Send headers immediately.
     res.flushHeaders();
 
-    // Callback passed to graphBuilder.js.
     function emit(update) {
         if (
             !res.destroyed &&
@@ -57,7 +48,6 @@ app.get('/api/graph', async (req, res) => {
     }
 
     try {
-        // Generate the graph while streaming updates.
         await buildGraph(
             name.trim(),
             emit
@@ -70,14 +60,18 @@ app.get('/api/graph', async (req, res) => {
             message: 'Failed to generate graph'
         });
     } finally {
-        // Close the stream when finished.
         res.end();
     }
 });
 
-// Start Express.
-app.listen(PORT, () => {
-    console.log(
-        `RabbitHole running on port ${PORT}`
-    );
-});
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+        console.log(
+            `RabbitHole running on port ${PORT}`
+        );
+    });
+}
+
+module.exports = app;
