@@ -1,4 +1,4 @@
-//import dependencies
+// import dependencies
 const express = require('express');
 require('dotenv').config();
 
@@ -9,7 +9,7 @@ const {
 
 // set up express server
 const app = express();
-const PORT = 3000;
+
 
 // Endpoint for generating a graph.
 app.get('/api/graph', async (req, res) => {
@@ -75,9 +75,19 @@ app.get('/api/graph', async (req, res) => {
     }
 });
 
-// Start Express.
-app.listen(PORT, () => {
-    console.log(
-        `RabbitHole running on port ${PORT}`
-    );
-});
+
+// Start Express normally when this file
+// is executed directly.
+if (require.main === module) {
+    const PORT = 3000;
+
+    app.listen(PORT, () => {
+        console.log(
+            `RabbitHole running on port ${PORT}`
+        );
+    });
+}
+
+
+// Allow Vercel to use this Express app.
+module.exports = app;
