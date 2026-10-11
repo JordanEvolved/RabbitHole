@@ -1,6 +1,5 @@
-const { rateLimitedFetch } = require('../services/rateLimiter');
-
 //import dependencies
+const { rateLimitedFetch } = require('../services/rateLimiter');
 const API_URL = 'https://api.discogs.com';
 
 async function discogsFetch(path, budget) {
